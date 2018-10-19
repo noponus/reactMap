@@ -2,19 +2,22 @@ import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
 import escapeRegExp from 'escape-string-regexp';
-import MenuFilter from './MenuFilter';
+import MenuComponent from './MenuComponent';
+import SearchBar from './SearchBar';
+import ErrorBoundary from './ErrorBoundary';
+import Header from './Header';
 
 
 class App extends Component {
     constructor(props){
         super(props)
         this.state={
-            center:{},
             venues:[],
             markers:[],
-            allVenues:[],
             query:'',
-            hiddenMarkers:[]
+            showVenues: [],
+            notVisibleMarkers: []
+
         }
     }
 
@@ -43,7 +46,7 @@ class App extends Component {
             client_secret:"MDKWA25TEHXVRQQQG4HFOYU4RW3IJSVDAM1PJOVZTW1WVG5Q",
             query:"Church",
             near:"Twin Falls ID",
-            limit: 15,
+            limit: 10,
             ll: "42.562786,  -114.4605031",
             v:"20181011"
         };
@@ -51,7 +54,7 @@ class App extends Component {
             .then(response => {
                 this.setState({
                     venues:response.data.response.groups[0].items,
-                    allVenues: response.data.response.groups[0].items
+                    showVenues: response.data.response.groups[0].items
                 }, this.renderMap())
             })
             .catch(error=>{
@@ -63,7 +66,7 @@ class App extends Component {
     initMap = () => {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.562786, lng: -114.4605031},
-            zoom: 12
+            zoom: 14
         });
 
         const infowindow = new window.google.maps.InfoWindow( {maxWidth:200});
@@ -84,6 +87,8 @@ class App extends Component {
                 id: myVenue.venue.id,
                 animation: window.google.maps.Animation.DROP,
             });
+            this.state.markers.push(marker);
+
             marker.addListener('click', function() {
                 infowindow.setContent(contentString);
                 infowindow.open(map, marker);
@@ -97,52 +102,74 @@ class App extends Component {
 
 
     };
-
-
-    itemVisibility = (anArray, aBoolean) => {
-        return anArray.forEach(marker => marker.setVisible(aBoolean))
-    }
-    handleSearch = query => {
+    /*
+   * Handling the query update i.e. when the user uses the filter option
+  */
+    updateQuery = query => {
         this.setState({ query })
-        let filterVenues
-        let hiddenMarkers
         this.state.markers.map(marker => marker.setVisible(true))
+        let filterVenues
+        let notVisibleMarkers
+
         if (query) {
             const match = new RegExp(escapeRegExp(query), "i")
             filterVenues = this.state.venues.filter(myVenue =>
                 match.test(myVenue.venue.name)
             )
             this.setState({ venues: filterVenues })
-            hiddenMarkers = this.state.markers.filter(marker =>
+            notVisibleMarkers = this.state.markers.filter(marker =>
                 filterVenues.every(myVenue => myVenue.venue.name !== marker.title)
             )
-            this.itemVisibility(hiddenMarkers, false)
-            this.setState({ hiddenMarkers })
+
+            /*
+             * Hiding the markers for venues not included in the filtered venues
+            */
+            notVisibleMarkers.forEach(marker => marker.setVisible(false))
+
+            this.setState({ notVisibleMarkers })
         } else {
-            this.setState({ venues: this.state.allVenues })
-            this.itemVisibility(this.state.markers, true)
+            this.setState({ venues: this.state.showVenues })
+            this.state.markers.forEach(marker => marker.setVisible(true))
         }
     }
 
+
+
     render() {
-        return (
-            <main>
-                <div className="sideBar">
-                    <MenuFilter
-                        markers={ this.state.markers }
-                        filteredVenues={ this.filteredVenues }
-                        query={this.state.query}
-                        clearQuery={this.clearQuery}
-                        handleSearch={b => this.handleSearch(b)}
-                        clickLocation={this.clickLocation}
-                        venues={ this.state.venues }
-                    />
+        if (this.state.hasError) {
+            return <div id="Error-message" aria-label="Error message">Sorry, something went wrong!</div>
+        } else {
+            return (
+                <main>
+                    <ErrorBoundary>
+                        <div id="header" aria-label="Header">
+                            <Header/>
+                        </div>
+                        <div className="sideBar">
+                            <SearchBar
+                                venues={this.state.showVenues}
+                                markers={this.state.markers}
+                                filteredVenues={this.filteredVenues}
+                                query={this.state.query}
+                                clearQuery={this.clearQuery}
+                                updateQuery={b => this.updateQuery(b)}
+                                clickLocation={this.clickLocation}
 
-                </div>
+                            />
 
-                 <div id="map"></div>
-            </main>
-        );
+                        </div>
+                        <div id="container" aria-label="Menu Container">
+                            <MenuComponent
+                                venues={this.state.venues}
+                                markers={this.state.markers}
+                            />
+                        </div>
+
+                        <div id="map" aria-label="Map" role="application"></div>
+                    </ErrorBoundary>
+                </main>
+            );
+        }
     }
 }
 

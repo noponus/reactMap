@@ -6,28 +6,51 @@ html, body {
     font-family: 'serif', 'sans-serif', 'cursive', 'fantasy', 'monospace' ;
     height: 100vh;
 }
+#main {
+    display: flex;
+}
 
 #map {
     height: 100vh;
 }
-
-#main {
+#header {
+    height: 10vh;
+    background-color: cornsilk;
+    padding-top: 0px;
+    border:cornsilk ;
+}
+#header h3 {
+    text-align: center;
+    font-size: 30px;
+    font-family: Algerian;
+    background-color: cornsilk;
+}
+#container {
     display: flex;
-    float:left;
+    background-color: rgb(247, 245, 158);
 }
 
 #sideBar {
     width: 25%;
     height: 3rem;
-    font-size: 1.1rem;
+    font-size: 12px;
     background-color: azure;
 }
 .venueList{
     padding:2rem;
 }
+#query-Filter{
+    background-color: cornsilk;
+    height: 30px;
+    width: 100%;
+    padding-top: 10px;
+    text-align: center;
+    border: cornsilk;
+    font-size: 16px;
+}
 .menu-result {
     list-style: none;
-    font-size: 1.5rem;
+    font-size: 14px;
     padding: 1rem;
     box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
     text-align: center;
@@ -37,77 +60,63 @@ html, body {
 }
 /*  */
 .theList {
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 0px;
-}
-#theFilter {
-    width: 100%;
-}
-.searchBar {
-    padding:20px 5px 5px 10px;
-}
-.menu-result li {
     list-style-type: none;
-    padding: 10px;
-    color: #3b3e49;
+
+}
+.theList li:hover {
+     color: navajowhite;
+     background: #3b3e49;
+ }
+
+.theList li {
+    color: black;
     cursor: pointer;
     font-weight: bold;
-    font-size:1.4em;
     transition: all 300ms ease-in-out;
+    font-size: 16px;
 }
-.menu-result li i{
+.theList i{
     font-weight: normal;
-    font-size:0.8em;
+    font-size:15px;
 }
-.menu-result li:hover {
-    color: #f5da9a;
-    background: #3b3e49;
+.theList i:hover {
+    color: navajowhite;
+    background: purple;
 }
 
 /*-----burger menu, reference https://www.npmjs.com/package/react-burger-menu ------*/
 .bm-burger-button {
     position: fixed;
-    width: 35px;
-    height: 30px;
-    left: 30px;
-    top: 10vh;
+    width: 20px;
+    height: 15px;
+    left: 15px;
+    top: 5vh;
+    background-color: cornsilk;
 }
 
 .bm-burger-bars {
-    background: #3b3e49;
+    background: red;
 }
 
-
-/* Position and sizing of clickable cross button */
 .bm-cross-button {
-    height: 25px;
-    width: 25px;
-    margin: 10px 10px 3px 0;
-    padding: 15px;
-
+    margin-right: 6px;
 }
-
-
 /* Color/shape of close button cross */
 .bm-cross {
-    background: #3b3e49;
+    background: red;
+    margin-right: 6px;
 }
+
 
 .bm-menu {
-    background: #f5da9a;
+    background:darkgray;
     font-size: 1.3em;
 }
-
-
 .bm-item-list {
     margin: auto;
-    text-align: left;
-}
-
-/* list item */
-.bm-item {
-    display: inline-block;
-    margin: 0px;
+    text-align: center;
 }
 
 @media screen and (max-width: 530px) and (min-width: 351px) {
@@ -129,6 +138,9 @@ html, body {
         height: 25px;
         left: 20px;
         top: 3vh;
+    }
+    .bm-overlay {
+        background: rgba(0, 0, 0, 0.3);
     }
 }
 
