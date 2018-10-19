@@ -60,11 +60,10 @@ class App extends Component {
 
     }
 
-
     initMap = () => {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.562786, lng: -114.4605031},
-            zoom: 16
+            zoom: 12
         });
 
         const infowindow = new window.google.maps.InfoWindow( {maxWidth:200});
@@ -96,7 +95,9 @@ class App extends Component {
         })
 
 
+
     };
+
 
     itemVisibility = (anArray, aBoolean) => {
         return anArray.forEach(marker => marker.setVisible(aBoolean))
@@ -108,12 +109,12 @@ class App extends Component {
         this.state.markers.map(marker => marker.setVisible(true))
         if (query) {
             const match = new RegExp(escapeRegExp(query), "i")
-            filterVenues = this.state.venues.filter(site =>
-                match.test(site.venue.name)
+            filterVenues = this.state.venues.filter(myVenue =>
+                match.test(myVenue.venue.name)
             )
             this.setState({ venues: filterVenues })
             hiddenMarkers = this.state.markers.filter(marker =>
-                filterVenues.every(site => site.venue.name !== marker.title)
+                filterVenues.every(myVenue => myVenue.venue.name !== marker.title)
             )
             this.itemVisibility(hiddenMarkers, false)
             this.setState({ hiddenMarkers })
@@ -122,6 +123,7 @@ class App extends Component {
             this.itemVisibility(this.state.markers, true)
         }
     }
+
     render() {
         return (
             <main>
