@@ -46,7 +46,7 @@ class App extends Component {
             client_secret:"MDKWA25TEHXVRQQQG4HFOYU4RW3IJSVDAM1PJOVZTW1WVG5Q",
             query:"Church",
             near:"Twin Falls ID",
-            limit: 10,
+            limit: 15,
             ll: "42.562786,  -114.4605031",
             v:"20181011"
         };
@@ -58,7 +58,8 @@ class App extends Component {
                 }, this.renderMap())
             })
             .catch(error=>{
-                console.log("Problem with the data from FourSquare API. The error might be " + error);
+                alert(`Sorry, Problem with the data from FourSquare API is getting too long ... this is unusual`)
+                console.log("Foursquare error! " + error)
         })
 
     }
@@ -66,10 +67,10 @@ class App extends Component {
     initMap = () => {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.562786, lng: -114.4605031},
-            zoom: 14
+            zoom: 15
         });
 
-        const infowindow = new window.google.maps.InfoWindow( {maxWidth:200});
+        const infowindow = new window.google.maps.InfoWindow( {maxWidth:150});
         this.infowindow = infowindow;
 
 
@@ -89,8 +90,14 @@ class App extends Component {
             });
             this.state.markers.push(marker);
 
+            function animationEffect() {
+                marker.setAnimation(window.google.maps.Animation.BOUNCE)
+                setTimeout(function(){ marker.setAnimation(null) }, 550)
+            }
+
             marker.addListener('click', function() {
                 infowindow.setContent(contentString);
+                animationEffect()
                 infowindow.open(map, marker);
             });
             map.addListener('click', function(){
@@ -145,7 +152,7 @@ class App extends Component {
                         <div id="header" aria-label="Header">
                             <Header/>
                         </div>
-                        <div className="sideBar">
+                        <div className="sideBar" aria-label="Search Bar">
                             <SearchBar
                                 venues={this.state.showVenues}
                                 markers={this.state.markers}
@@ -154,9 +161,7 @@ class App extends Component {
                                 clearQuery={this.clearQuery}
                                 updateQuery={b => this.updateQuery(b)}
                                 clickLocation={this.clickLocation}
-
                             />
-
                         </div>
                         <div id="container" aria-label="Menu Container">
                             <MenuComponent

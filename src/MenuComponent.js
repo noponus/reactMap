@@ -44,9 +44,6 @@ class MenuComponent extends Component {
                         </li>
                         </ul>
                     ))}
-
-
-
                 </div>
             </Menu>
         );
