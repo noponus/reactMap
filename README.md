@@ -1,12 +1,12 @@
 Neighborhood Map Project
 
 Table of Contents
-Introduction
-Project goal
-How to run the project
-How to run production build 
-APIs Used
-Future plans
+	(1)Introduction
+	(2) Project goal
+	(3) How to run the project
+	(4) How to run production build 
+	(5) APIs Used
+	(6) Future plans
 
 Introduction
 	This is an application that listed churches in my town, Twin Falls Idaho US. I want people that comes into the town to be able to locate church near them. This application is not intended to replace googlee, Google API was used as the backbone. When the project is completed, the images of the church and a short video will be displayed (still developing)
