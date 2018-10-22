@@ -24,25 +24,25 @@ class MenuComponent extends Component {
         return (
 
             <Menu width={ '25%'} isOpen noOverlay >
-                <div className="theList" aria-label="List of Venues">
+                <div className="theList" aria-label="List of Venues" role="menuitem" >
 
                     {this.props.venues.map(myVenue => (
-                        <ul className= "theList" key={myVenue.venue.id} >
-                        <li role="menuitem"
+                            <ul key={myVenue.venue.id} role="menuitem">
+                                <li
                             onClick={() => {
                                 this.openInfo(myVenue.venue.name);
                             }}
-                            aria-label={myVenue.venue.name}
-                            tabIndex="0"
-                            id={myVenue.venue.id}
-                            key={myVenue.venue.id}
-                        >
-                            <br/>
-                            <b>{myVenue.venue.name}</b>
-                            <br/>
-                            <i>{myVenue.venue.location.address}</i>
-                        </li>
-                        </ul>
+                                aria-label={myVenue.venue.name}
+                                tabIndex="0"
+                                id={myVenue.venue.id}
+                                key={myVenue.venue.id}
+                            >
+                                <br/>
+                                    <b>{myVenue.venue.name}</b>
+                                <br/>
+                                <i>{myVenue.venue.location.address}</i>
+                            </li>
+                            </ul>
                     ))}
                 </div>
             </Menu>

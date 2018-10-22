@@ -34,7 +34,7 @@ class App extends Component {
         script.defer = true;
         index.parentNode.insertBefore(script, index)
         script.onError = function(){
-            alert("You have a loading problem with your map. Check your key!! ")
+            alert("You have a loading problem with your google map. Check your key!! ")
         };
         window.initMap= this.initMap
     };
@@ -67,8 +67,11 @@ class App extends Component {
     initMap = () => {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: {lat: 42.562786, lng: -114.4605031},
-            zoom: 15
-        });
+            zoom: 15,
+            mapTypeControlOptions: {
+                alt: ['google map'],},
+            disableDefaultUI:true
+    });
 
         const infowindow = new window.google.maps.InfoWindow( {maxWidth:150});
         this.infowindow = infowindow;
@@ -103,6 +106,7 @@ class App extends Component {
             map.addListener('click', function(){
                 marker.setAnimation(null);
                 infowindow.close(map, marker)
+                map.setCenter(marker.getPosition());
             })
         })
 
@@ -169,8 +173,7 @@ class App extends Component {
                                 markers={this.state.markers}
                             />
                         </div>
-
-                        <div id="map" aria-label="Map" role="application"></div>
+                        <div id="map" aria-label="Map" role="application" ></div>
                     </ErrorBoundary>
                 </main>
             );
